@@ -52,3 +52,4 @@ def sign_up():
             login_user(new_user, remember=True)
             flash('Account created ! ' ,category='success')
         return render_template("index.html", user=current_user)
+    

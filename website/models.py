@@ -21,4 +21,6 @@ class student(db.Model, UserMixin):
     first_name = db.Column(db.String(55), nullable=False)
     last_name = db.Column(db.String(55) , nullable=False)
     section = db.Column(db.String(55), nullable=False)
+    totalPresent = db.Column(db.Integer, nullable=False)
+    totalAbsent = db.Column(db.Integer, nullable=False)
     attendance = db.Column(db.String(55), nullable=False)

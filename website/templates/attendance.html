@@ -198,7 +198,7 @@
           <!-- Existing rows will be dynamically loaded here -->
           {% for student in students %}
 
-          <form action="{{url_for('views.attendanceCreate')}}" method="post">
+          
           <tr>
             <td>{{ student.studentid}}</td>
             <td>{{ student.first_name}}</td>
@@ -207,10 +207,10 @@
             <td>{{ student.attendance}}</td>
             
             <td>
-                <input class="form-check-input" type="radio" name="{{student.studentid}}" id="presentRadio_{{student.studentid}}" value="present">
+                {{ student.totalPresent}}
             </td>
             <td>
-                <input class="form-check-input" type="radio" name="{{student.studentid}}" id="absentRadio_{{student.studentid}}" value="absent">
+              {{ student.totalAbsent}}
             </td>
           </tr>
           {% endfor %}
@@ -218,11 +218,6 @@
       </table>
 
       
-        
-          <button type="submit" class="btn btn-success">
-            Submit
-          </button>
-      </form>
     </div>
 
     <!-- Modal -->
