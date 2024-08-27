@@ -114,6 +114,10 @@
       .rowattendance {
         padding: 10px;
       }
+      a{
+        text-decoration: none;
+        color: white;
+      }
     </style>
   </head>
   <body>
@@ -188,8 +192,8 @@
             <th>S. ID</th>
             <th>F. Name</th>
             <th>L. Name</th>
-            <th>Section</th>
             <th>Email</th>
+            <th>Section</th>
             <th>Present</th>
             <th>Absent</th>
           </tr>
@@ -219,14 +223,14 @@
 
       
         
-          <button type="submit" class="btn btn-success">
-            Submit
-          </button>
+      <button type="submit" class="btn btn-success">Submit</button>
+      <button type="button" class="btn btn-success"><a href="{{url_for('views.registerStudent')}}">Register Student</a></button>
+      <button type="button" class="btn btn-danger">Delete</button>
       </form>
     </div>
 
     <!-- Modal -->
-    <div
+  <!--   <div
       class="modal fade"
       id="mymodal"
       tabindex="-1"
@@ -319,7 +323,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Logout Modal -->
     <div

@@ -12,16 +12,17 @@ def index():
 @views.route('/home', methods=['GET'])
 def home():
     students = student.query.all()
-    """ students[0].totalPresent = 0
-    students[0].totalAbsent = 0
+#    for stud in students:
+#        stud.totalPresent = 0
+#        stud.totalAbsent = 0 
 
-    db.session.commit() """
+#        db.session.commit() 
 
     return render_template("home.html", students=students)
 
 @views.route('/home/register', methods=['GET'])
 def registerStudent():
-
+    
     return render_template("register.html")
 
 
