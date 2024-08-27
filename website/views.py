@@ -9,6 +9,11 @@ views = Blueprint('views', __name__)
 def index():
     return render_template("index.html", user=current_user)
 
+@views.before_request
+def handle_method_override():
+    if request.method == 'POST' and '_method' in request.form:
+        request.method = request.form['_method'].upper()
+
 @views.route('/home', methods=['GET'])
 def home():
     students = student.query.all()
@@ -68,6 +73,26 @@ def attendanceCreate():
     
     return redirect(url_for("views.home"))
 
+@views.route('/home/deleteStudent/<int:id>', methods=['DELETE', 'POST'])
+def deleteStudent(id): 
+    
+    if request.method == 'DELETE':\
+        
+        deleteStudent = student.query.get(id)
+
+       
+        if deleteStudent is None:   
+            flash('Student not found', 'danger')
+        
+        db.session.delete(deleteStudent)
+        db.session.commit()
+
+      
+
+        flash('Student deleted successfully', 'success')
+        return redirect(url_for('views.home'))
+    else:
+        return 'Method Not Allowed', 405    
 
 @views.route('/home/student_attendance', methods=['GET'])
 def student_attendance():

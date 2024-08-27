@@ -114,7 +114,7 @@
       .rowattendance {
         padding: 10px;
       }
-      a{
+      a {
         text-decoration: none;
         color: white;
       }
@@ -159,8 +159,12 @@
       <div></div>
       <!-- Empty div to push the nav-list to the center -->
       <ul class="nav-list list-unstyled mb-0 mx-auto d-flex">
-        <li class="px-2"><a href="{{url_for('views.home')}}" class="active">Home</a></li>
-        <li class="px-2"><a href="{{url_for('views.student_attendance')}}">Report</a></li>
+        <li class="px-2">
+          <a href="{{url_for('views.home')}}" class="active">Home</a>
+        </li>
+        <li class="px-2">
+          <a href="{{url_for('views.student_attendance')}}">Report</a>
+        </li>
       </ul>
       <div class="btn-logout">
         <button
@@ -185,52 +189,81 @@
           </div>
         </div>
       </div>
+      <form action="{{url_for('views.attendanceCreate')}}" method="post">
+        <table class="table table-hover mt-4">
+          <thead>
+            <tr>
+              <th>S. ID</th>
+              <th>F. Name</th>
+              <th>L. Name</th>
+              <th>Email</th>
+              <th>Section</th>
+              <th>Present</th>
+              <th>Absent</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceTable">
+            <!-- Existing rows will be dynamically loaded here -->
+            {% for student in students %}
 
-      <table class="table table-hover mt-4">
-        <thead>
-          <tr>
-            <th>S. ID</th>
-            <th>F. Name</th>
-            <th>L. Name</th>
-            <th>Email</th>
-            <th>Section</th>
-            <th>Present</th>
-            <th>Absent</th>
-          </tr>
-        </thead>
-        <tbody id="attendanceTable">
-          <!-- Existing rows will be dynamically loaded here -->
-          {% for student in students %}
+            <tr>
+              <td>{{ student.studentid}}</td>
+              <td>{{ student.first_name}}</td>
+              <td>{{ student.last_name}}</td>
+              <td>{{ student.section}}</td>
+              <td>{{ student.attendance}}</td>
 
-          <form action="{{url_for('views.attendanceCreate')}}" method="post">
-          <tr>
-            <td>{{ student.studentid}}</td>
-            <td>{{ student.first_name}}</td>
-            <td>{{ student.last_name}}</td>
-            <td>{{ student.section}}</td>
-            <td>{{ student.attendance}}</td>
-            
-            <td>
-                <input class="form-check-input" type="radio" name="{{student.studentid}}" id="presentRadio_{{student.studentid}}" value="present">
-            </td>
-            <td>
-                <input class="form-check-input" type="radio" name="{{student.studentid}}" id="absentRadio_{{student.studentid}}" value="absent">
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+              <td>
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="{{student.studentid}}"
+                  id="presentRadio_{{student.studentid}}"
+                  value="present"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="{{student.studentid}}"
+                  id="absentRadio_{{student.studentid}}"
+                  value="absent"
+                />
+              </td>
+              <td>
+                <form action=""></form>
+                <form
+                  action="{{url_for('views.deleteStudent', id=student.studentid)}}"
+                  method="post"
+                  id="deleteStudent_{{student.studentid}}"
+                >
+                  <input type="hidden" name="_method" value="DELETE" />
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="deleteStudent(this, '{{student.studentid}}')"
+                  >
+                    Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
 
-      
-        
-      <button type="submit" class="btn btn-success">Submit</button>
-      <button type="button" class="btn btn-success"><a href="{{url_for('views.registerStudent')}}">Register Student</a></button>
-      <button type="button" class="btn btn-danger">Delete</button>
+        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="button" class="btn btn-success">
+          <a href="{{url_for('views.registerStudent')}}">Register Student</a>
+        </button>
+        <button type="button" class="btn btn-danger">Delete</button>
       </form>
     </div>
 
     <!-- Modal -->
-  <!--   <div
+    <!--   <div
       class="modal fade"
       id="mymodal"
       tabindex="-1"
@@ -366,6 +399,12 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script></script>
+    <script>
+      function deleteStudent(element, id) {
+        var closestForm = document.getElementById("deleteStudent_" + id);
+
+        closestForm.submit();
+      }
+    </script>
   </body>
 </html>
