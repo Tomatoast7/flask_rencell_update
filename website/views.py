@@ -1,9 +1,25 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for,jsonify
+from flask import Blueprint, render_template, request, redirect, session, flash, redirect, url_for, jsonify
 from flask_login import login_required, logout_user, current_user
 from .models import student
 from . import db
+import os
+import os.path
+import base64
+import secrets
+import signal
+import sys
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from email.mime.text import MIMEText
+
+secret_key = secrets.token_hex(16)
 
 views = Blueprint('views', __name__)
+views.secret_key = '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'
+
+SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
 @views.route('/')
 def index():
@@ -38,10 +54,11 @@ def saveStudent():
         fname = request.form['fname']
         lname = request.form['lname']
         email = request.form['email']
-        attendances = request.form['attendance']
+        section = request.form['section']
+        
 
     
-    new_student = student(first_name=fname, last_name=lname, section=email, attendance=attendances, totalPresent=0, totalAbsent=0)
+    new_student = student(first_name=fname, last_name=lname, email=email, section=section, totalPresent=0, totalAbsent=0, attendance="")
     db.session.add(new_student)
     db.session.commit()
     
@@ -66,12 +83,8 @@ def attendanceCreate():
             else:
                 students.totalAbsent += 1
             db.session.commit()
-            print("present", students.totalPresent)
-            print("absent", students.totalAbsent)
-       
         
-    
-    return redirect(url_for("views.home"))
+        return redirect(url_for("views.home"))
 
 @views.route('/home/deleteStudent/<int:id>', methods=['DELETE', 'POST'])
 def deleteStudent(id): 
@@ -100,48 +113,16 @@ def student_attendance():
 
     return render_template("attendance.html", students=students)
 
-
-@views.route('/report')
-def report():
-    #students = student.query.all()  # Query all student records
-    return render_template("report.html")
-
-
 @views.route('/update-attendance', methods=['POST'])
 def update_attendance():
-    # Process the form data
+   
     data = request.form
-    # Implement logic to update the database or in-memory data
+    
     return jsonify({'status': 'success'})
 
-# @views.route('/submit_attendance', methods=['POST'])
-# def submit_attendance():
-#     student_ids = request.form.getlist('studentid[]')
-#     first_names = request.form.getlist('first_name[]')
-#     last_names = request.form.getlist('last_name[]')
-#     sections = request.form.getlist('section[]')
-#     attendances = request.form.getlist('attendance[]')
-
-#     # Ensure all lists are the same length
-#     if len(student_ids) == len(first_names) == len(last_names) == len(sections) == len(attendances):
-#         for i in range(len(student_ids)):
-#             student_entry = student(
-#                 studentid=student_ids[i],
-#                 first_name=first_names[i],
-#                 last_name=last_names[i],
-#                 section=sections[i],
-#                 attendance=attendances[i]
-#             )
-#             db.session.add(student_entry)
-        
-#         db.session.commit()
-#         flash("Attendance data has been saved successfully.", "success")
-#     else:
-#         flash("There was an error processing the attendance data.", "danger")
-
-#     return redirect(url_for('views.report'))
-
-# @views.route('/view_students')
-# def view_students():
-#     students = student.query.all()  # Query all records from the student table
-#     return render_template('view_students.html', students=students)
+#Middleware
+@views.route('/end_session', methods=['POST'])
+def end_session():
+    # Terminate the process
+    os.kill(os.getpid(), signal.SIGINT)  # Simulate Ctrl+C
+    return 'Session ending...', 200

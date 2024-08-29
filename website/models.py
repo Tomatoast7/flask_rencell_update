@@ -20,6 +20,7 @@ class student(db.Model, UserMixin):
     studentid = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(55), nullable=False)
     last_name = db.Column(db.String(55) , nullable=False)
+    email = db.Column(db.String(55), nullable=False)
     section = db.Column(db.String(55), nullable=False)
     totalPresent = db.Column(db.Integer, nullable=False)
     totalAbsent = db.Column(db.Integer, nullable=False)

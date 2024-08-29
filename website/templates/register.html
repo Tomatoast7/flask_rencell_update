@@ -27,33 +27,32 @@
         <div class="col-12 col-sm-8 col-md-6 m-auto">
           <div class="card">
             <div class="card-body">
-              <form action="{{ url_for('views.saveStudent') }}" method="post" class="w-50 mx-auto">
+              <form action="{{ url_for('views.saveStudent') }}" method="POST" class="w-50 mx-auto">
   
                 <div class="form-group">
         
                   
                   
                       <label for="fname" class="">First name</label>
-                      <input type="fname" class="form-control" id="fname" name="fname" />
+                      <input type="fname" class="form-control" id="fname" name="fname"/>
                 
         
                    
                       <label for="lname" class="">Last name</label>
-                      <input type="lname" class="form-control" id="lname" name="lname" />
+                      <input type="lname" class="form-control" id="lname" name="lname"/>
                
                   
                       <label for="inputEmail3" class="">Email</label>
-                      <input type="text" class="form-control" id="inputEmail3" name="email" />
-               
+                      <input type="text" class="form-control" id="inputEmail3" name="email"/>
         
              
                       <label for="inputPassword3" class="">Section</label>
-                      <input type="attendance" class="form-control" id="attendance" name="attendance"/>
+                      <input type="section" class="form-control" id="section" name="section"/>
                     
                       
                     <div class="row">
                       <div class="col-12 mx-auto mt-4">
-                        <button type="submit" class="btn btn-primary w-100">Add Attendance</button>
+                        <button type="submit" class="btn btn-primary w-100">Add Student</button>
                       </div>
                     </div>
                 </div>
